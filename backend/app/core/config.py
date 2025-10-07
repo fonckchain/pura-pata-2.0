@@ -1,6 +1,7 @@
 from pydantic_settings import BaseSettings
 from pydantic import field_validator
 from typing import List, Union
+import os
 
 
 class Settings(BaseSettings):
@@ -39,7 +40,8 @@ class Settings(BaseSettings):
     MAX_PHOTOS_PER_DOG: int = 5
 
     class Config:
-        env_file = ".env"
+        # Only load .env file in development (not in Railway/production)
+        env_file = ".env" if os.getenv("RAILWAY_ENVIRONMENT") is None else None
         case_sensitive = True
 
 
