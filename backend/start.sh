@@ -5,6 +5,9 @@ echo "========================================="
 echo "Starting Pura Pata API"
 echo "========================================="
 
+# Quick environment check
+python check_env.py || exit 1
+
 # Run healthcheck
 python healthcheck.py || exit 1
 
