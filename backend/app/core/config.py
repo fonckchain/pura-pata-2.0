@@ -40,8 +40,9 @@ class Settings(BaseSettings):
     MAX_PHOTOS_PER_DOG: int = 5
 
     class Config:
-        # Only load .env file in development (not in Railway/production)
-        env_file = ".env" if os.getenv("RAILWAY_ENVIRONMENT") is None else None
+        # Don't load .env file - use only environment variables
+        # This prevents Railway from using local .env values
+        env_file = None
         case_sensitive = True
 
 
