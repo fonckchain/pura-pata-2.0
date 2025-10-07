@@ -1,15 +1,26 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from contextlib import asynccontextmanager
 from .core.config import settings
 from .core.database import Base, engine
 
-# Create tables
-Base.metadata.create_all(bind=engine)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: Create database tables
+    print("🚀 Creating database tables...")
+    Base.metadata.create_all(bind=engine)
+    print("✅ Database tables created")
+    yield
+    # Shutdown: cleanup if needed
+    print("👋 Shutting down...")
+
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
     version=settings.VERSION,
-    openapi_url=f"{settings.API_V1_STR}/openapi.json"
+    openapi_url=f"{settings.API_V1_STR}/openapi.json",
+    lifespan=lifespan
 )
 
 # CORS
