@@ -1,5 +1,5 @@
 from fastapi import APIRouter, Depends, HTTPException, status
-from fastapi.security import HTTPBearer, HTTPAuthCredential
+from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 from sqlalchemy.orm import Session
 from datetime import timedelta
 from typing import Optional
@@ -15,7 +15,7 @@ router = APIRouter()
 security = HTTPBearer()
 
 
-def get_supabase_user(credentials: HTTPAuthCredential = Depends(security)):
+def get_supabase_user(credentials: HTTPAuthorizationCredentials = Depends(security)):
     """Verify Supabase JWT token and extract user info"""
     token = credentials.credentials
     payload = verify_token(token)
